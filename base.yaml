@@ -130,6 +130,68 @@ components:
               type: boolean
               description: 是否開新頁
               example: true
+    MiniGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: 開襟領寬版襯衫
+        attrs:
+          description: 布林屬性
+          allOf:
+          - $ref: '#/components/schemas/Attrs'
+          - type: object
+            properties:
+              visible:
+                type: boolean
+                description: 前台顯示 / 隱形商品
+                example: true
+              hasSpecification:
+                type: boolean
+                description: 有規格
+                example: true
+    MiniProduct:
+      type: object
+      description: 規格商品
+      properties:
+        id:
+          type: integer
+          example: 2
+        number:
+          type: string
+          description: 商品編號
+          example: Y21S018-022
+        quantity:
+          type: integer
+          description: 可銷售數量
+          example: 100
+        price:
+          type: integer
+          description: 實際售價
+          example: 999
+        attrs:
+          description: 布林屬性
+          allOf:
+          - $ref: '#/components/schemas/Attrs'
+          - type: object
+            properties:
+              isSale:
+                type: boolean
+                description: 可加入購物車
+                example: true
+              isOverSold:
+                type: boolean
+                description: 可超賣
+                example: false
+        specification:
+          type: string
+          description: 多規格內容
+          example: S / 白
+        group:
+          $ref: '#/components/schemas/MiniGroup'
     Pagination:
       type: object
       properties:
