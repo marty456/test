@@ -1,0 +1,186 @@
+openapi: 3.0.1
+info:
+  title: Washop/Admin/Base
+  version: 1.1.0
+servers:
+- url: https://api.admin.wabow.com/
+paths:
+  /dummy:
+    patch:
+      tags:
+      - 假功能
+      summary: 假功能
+      responses:
+        200:
+          $ref: '#/components/responses/UpdateOk'
+        401:
+          $ref: '#/components/responses/AuthError'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+      security:
+      - cookieAuth: []
+components:
+  parameters:
+    Page:
+      name: page
+      in: query
+      description: 指定頁數 (預設 1)
+      schema:
+        type: integer
+    PerPage:
+      name: per_page
+      in: query
+      description: 每頁返回的紀錄數量 (預設 20)
+      schema:
+        type: integer
+    SortWay:
+      name: sort_way
+      in: query
+      description: 排序方向
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+  schemas:
+    AuthError:
+      type: object
+      properties:
+        message:
+          type: string
+          description: 錯誤訊息
+          example: 身分認證無效
+        type:
+          type: string
+          description: 錯誤種類
+          example: Washop\Admin\Common\Exceptions\InvalidSessionException
+    Forbidden:
+      type: object
+      properties:
+        message:
+          type: string
+          description: 錯誤訊息
+          example: 帳號無此權限
+        type:
+          type: string
+          description: 錯誤種類
+          example: Washop\Admin\Common\Exceptions\ForbiddenException
+    NotFound:
+      type: object
+      properties:
+        message:
+          type: string
+          description: 錯誤訊息
+          example: Invalid data.
+        type:
+          type: string
+          description: 錯誤種類
+          example: Illuminate\Database\Eloquent\ModelNotFoundException
+    Ok:
+      type: object
+      properties:
+        message:
+          type: string
+          description: 應用互動訊息
+          example: ok
+    Attrs:
+      type: object
+      properties:
+        enable:
+          type: boolean
+          description: 上架 / 下架
+          example: true
+    Datetime:
+      type: string
+      format: datetime
+      example: "2021-01-29T03:16:42.000000Z"
+    Image:
+      type: object
+      description: 圖檔
+      properties:
+        image:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            url:
+              type: string
+              description: 圖檔連結
+              example: https://cdn/image/xxx.webp
+    Pagination:
+      type: object
+      properties:
+        total:
+          type: integer
+          description: 紀錄總數
+          example: 1
+        per_page:
+          type: integer
+          description: 每頁紀錄數量
+          example: 20
+    Prefix:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+    Sort:
+      type: object
+      properties:
+        sort:
+          type: integer
+          description: 排序
+          example: 10000
+    Suffix:
+      type: object
+      description: model 通用結尾
+      properties:
+        created_at:
+          $ref: '#/components/schemas/Datetime'
+        update_at:
+          $ref: '#/components/schemas/Datetime'
+    SuffixWithSort:
+      description: model 含排序通用結尾
+      allOf:
+      - $ref: '#/components/schemas/Sort'
+      - $ref: '#/components/schemas/Suffix'
+  responses:
+    DeleteOk:
+      description: 成功刪除資料
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Ok'
+    UpdateOk:
+      description: 成功更新資料
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Ok'
+    AuthError:
+      description: 未認證
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthError'
+    Forbidden:
+      description: 沒有權限
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Forbidden'
+    NotFound:
+      description: 找不到指定的資料
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotFound'
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      name: laravel_session
+      in: cookie
