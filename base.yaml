@@ -111,6 +111,25 @@ components:
               type: string
               description: 圖檔連結
               example: https://cdn/image/xxx.webp
+    Link:
+      type: object
+      description: 連結設定
+      properties:
+        path:
+          type: string
+          description: 站內路徑 (path / url 二選一)
+          example: ""
+        url:
+          type: string
+          description: 外站連結 (path / url 二選一)
+          example: https://other.web.url
+        attrs:
+          type: object
+          properties:
+            isBlank:
+              type: boolean
+              description: 是否開新頁
+              example: true
     Pagination:
       type: object
       properties:
