@@ -242,6 +242,18 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Ok'
+    ExportOk:
+      description: 匯出 CSV 檔案至下載中心 (欄位同列表)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Ok'
+    ImportOk:
+      description: 匯入成功
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Ok'
     AuthError:
       description: 未認證
       content:
