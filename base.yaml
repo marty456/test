@@ -45,6 +45,64 @@ components:
         - asc
         - desc
         default: asc
+    StartDate:
+      name: start_date
+      in: query
+      description: 開始日期 (start_date & end_date 相差不得超過 3 個月)
+      schema:
+        type: string
+        format: date
+    EndDate:
+      name: end_date
+      in: query
+      description: 結束日期 (start_date & end_date 相差不得超過 3 個月)
+      schema:
+        type: string
+        format: date
+    TagIds:
+      name: tag_ids
+      in: query
+      description: 搜尋 標籤陣列
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: integer
+    TagWay:
+      name: tag_way
+      in: query
+      description: 標籤搜尋方式
+      schema:
+        type: string
+        enum:
+        - intersection
+        - union
+        default: union
+    Email:
+      name: email
+      in: query
+      description: 搜尋 Email
+      schema:
+        type: string
+    Name:
+      name: name
+      in: query
+      description: 搜尋 名稱 (姓名)
+      schema:
+        type: string
+    PaymentCode:
+      name: payment_code
+      in: query
+      description: 搜尋 金流
+      schema:
+        type: string
+    ShippingCode:
+      name: shipping_code
+      in: query
+      description: 搜尋 物流
+      schema:
+        type: string
   schemas:
     AuthError:
       type: object
@@ -93,6 +151,27 @@ components:
           type: boolean
           description: 上架 / 下架
           example: true
+    BaseStatus:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+    Payment:
+      description: 金流
+      allOf:
+        - $ref: '#/components/schemas/BaseStatus'
+        - example:
+            code: credit-card,
+            name: 信用卡
+    Shipping:
+      description: 物流
+      allOf:
+        - $ref: '#/components/schemas/BaseStatus'
+        - example:
+            code: express,
+            name: 宅配
     Datetime:
       type: string
       format: datetime
@@ -111,25 +190,38 @@ components:
               type: string
               description: 圖檔連結
               example: https://cdn/image/xxx.webp
-    Link:
+    MaskContact:
       type: object
-      description: 連結設定
       properties:
-        path:
+        mask_name:
           type: string
-          description: 站內路徑 (path / url 二選一)
-          example: ""
-        url:
+          description: 姓名 (遮罩)
+          example: M***y
+        mask_telephone:
           type: string
-          description: 外站連結 (path / url 二選一)
-          example: https://other.web.url
-        attrs:
-          type: object
-          properties:
-            isBlank:
-              type: boolean
-              description: 是否開新頁
-              example: true
+          description: 手機號碼 (遮罩)
+          example: 0912***678
+        postcode:
+          $ref: '#/components/schemas/Postcode'
+        mask_address:
+          type: string
+          description: 收件人地址 (遮罩)
+          example: '***** 47 巷 8 號 10F'
+    MaskUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: 會員 ID
+          example: 123
+        mask_email:
+          type: string
+          description: Email (遮罩)
+          example: ma***@wabow.com
+        mask_name:
+          type: string
+          description: 姓名 (遮罩)
+          example: 邵*中
     MiniGroup:
       type: object
       properties:
@@ -192,6 +284,25 @@ components:
           example: S / 白
         group:
           $ref: '#/components/schemas/MiniGroup'
+    Link:
+      type: object
+      description: 連結設定
+      properties:
+        path:
+          type: string
+          description: 站內路徑 (path / url 二選一)
+          example: ""
+        url:
+          type: string
+          description: 外站連結 (path / url 二選一)
+          example: https://other.web.url
+        attrs:
+          type: object
+          properties:
+            isBlank:
+              type: boolean
+              description: 是否開新頁
+              example: true
     Pagination:
       type: object
       properties:
@@ -203,6 +314,30 @@ components:
           type: integer
           description: 每頁紀錄數量
           example: 20
+    Postcode:
+      type: object
+      properties:
+        code:
+          type: string
+          description: 郵遞區號
+          example: 115
+        official:
+          type: string
+          description: 官方郵遞區號
+          example: 115
+        name:
+          type: string
+          description: 鄉鎮市區
+          example: 南港區
+        city:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: 台北市
     Prefix:
       type: object
       properties:
@@ -216,13 +351,28 @@ components:
           type: integer
           description: 排序
           example: 10000
+    Store:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 超商門市代號
+          example: "170864"
+        name:
+          type: string
+          description: 超商門市地址
+          example: 鵬馳門市
+        address:
+          type: string
+          description: 超商門市地址
+          example: 台北市南港區南港路三段49-1號
     Suffix:
       type: object
       description: model 通用結尾
       properties:
         created_at:
           $ref: '#/components/schemas/Datetime'
-        update_at:
+        updated_at:
           $ref: '#/components/schemas/Datetime'
     SuffixWithSort:
       description: model 含排序通用結尾
