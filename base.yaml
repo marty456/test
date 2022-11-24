@@ -148,6 +148,26 @@ components:
           type: string
           description: 錯誤種類
           example: Washop\Admin\Common\Exceptions\ForbiddenException
+    FormError:
+      type: object
+      properties:
+        message:
+          type: string
+          description: 錯誤訊息
+          example: The given data was invalid.
+        type:
+          type: string
+          description: 錯誤種類
+          example: Washop\Foundation\Exceptions\ValidationException
+        extra:
+          type: object
+          properties: {}
+          description: 詳細錯誤訊息
+          example:
+            - email:
+                - The email field is required.
+            - password:
+                - The password field is required.
     NotFound:
       type: object
       properties:
@@ -438,6 +458,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Forbidden'
+    FormError:
+      description: 表單錯誤
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FormError'
     NotFound:
       description: 找不到指定的資料
       content:
