@@ -19,8 +19,6 @@ paths:
           $ref: '#/components/responses/Forbidden'
         404:
           $ref: '#/components/responses/NotFound'
-      security:
-      - cookieAuth: []
 components:
   parameters:
     Page:
@@ -45,6 +43,30 @@ components:
         - asc
         - desc
         default: asc
+    PageInPath:
+      name: page
+      in: path
+      description: 目標頁碼 (預設 1)
+      required: true
+      schema:
+        type: integer
+    PerPageInPath:
+      name: perPage
+      in: path
+      description: 每頁筆數 (預設 20)
+      required: true
+      schema:
+        type: integer
+    SortWayInPath:
+      name: sortWay
+      in: path
+      description: 排序方向 (預設 asc)
+      required: true
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
     StartDate:
       name: start_date
       in: query
@@ -161,17 +183,17 @@ components:
     Payment:
       description: 金流
       allOf:
-        - $ref: '#/components/schemas/BaseStatus'
-        - example:
-            code: credit-card,
-            name: 信用卡
+      - $ref: '#/components/schemas/BaseStatus'
+      - example:
+          code: credit-card,
+          name: 信用卡
     Shipping:
       description: 物流
       allOf:
-        - $ref: '#/components/schemas/BaseStatus'
-        - example:
-            code: express,
-            name: 宅配
+      - $ref: '#/components/schemas/BaseStatus'
+      - example:
+          code: express,
+          name: 宅配
     Datetime:
       type: string
       format: datetime
@@ -422,8 +444,3 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/NotFound'
-  securitySchemes:
-    cookieAuth:
-      type: apiKey
-      name: laravel_session
-      in: cookie
