@@ -84,13 +84,23 @@ components:
     TagIds:
       name: tag_ids
       in: query
-      description: 搜尋 標籤陣列
+      description: 搜尋 標籤 ID 陣列
       style: form
       explode: false
       schema:
         type: array
         items:
           type: integer
+    Tags:
+      name: tag_ids
+      in: query
+      description: 搜尋 標籤名稱 陣列
+      style: form
+      explode: false
+      schema:
+        type: array
+        items:
+          type: string
     TagWay:
       name: tag_way
       in: query
@@ -199,6 +209,8 @@ components:
         code:
           type: string
         name:
+          type: string
+        frontName:
           type: string
     Payment:
       description: 金流
