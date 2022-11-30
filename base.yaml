@@ -92,7 +92,7 @@ components:
         items:
           type: integer
     Tags:
-      name: tag_ids
+      name: tags
       in: query
       description: 搜尋 標籤名稱 陣列
       style: form
