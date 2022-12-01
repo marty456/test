@@ -67,6 +67,14 @@ components:
         enum:
         - asc
         - desc
+    Otp:
+      name: otp
+      in: query
+      description: 二次驗證碼 (6 碼數字，可能 0 開頭)
+      required: true
+      schema:
+        type: string
+      example: "085449"
     StartDate:
       name: start_date
       in: query
