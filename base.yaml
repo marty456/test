@@ -106,9 +106,7 @@ components:
       style: form
       explode: false
       schema:
-        type: array
-        items:
-          type: string
+        $ref: '#/components/schemas/Tags'
     TagWay:
       name: tag_way
       in: query
@@ -441,6 +439,14 @@ components:
       allOf:
       - $ref: '#/components/schemas/Sort'
       - $ref: '#/components/schemas/Suffix'
+    Tags:
+      description: 標籤陣列
+      type: array
+      items:
+        type: string
+      example:
+      - 標籤 A
+      - 標籤 B
   responses:
     DeleteOk:
       description: 成功刪除資料
