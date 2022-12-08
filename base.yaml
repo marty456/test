@@ -77,14 +77,14 @@ components:
     StartDate:
       name: start_date
       in: query
-      description: 開始日期 (start_date & end_date 相差不得超過 3 個月)
+      description: 開始日期
       schema:
         type: string
         format: date
     EndDate:
       name: end_date
       in: query
-      description: 結束日期 (start_date & end_date 相差不得超過 3 個月)
+      description: 結束日期
       schema:
         type: string
         format: date
