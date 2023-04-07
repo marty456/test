@@ -331,6 +331,14 @@ components:
                 type: boolean
                 description: 可超賣
                 example: false
+              isPromotionShow:
+                type: boolean
+                description: 優惠頁顯示 / 優惠頁不顯示
+                example: true
+              isRed:
+                type: boolean
+                description: 紅區商品 / 綠區商品
+                example: false
         specification:
           type: string
           description: 多規格內容
