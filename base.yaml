@@ -173,6 +173,17 @@ components:
                 - The email field is required.
             - password:
                 - The password field is required.
+    LoginFail:
+      type: object
+      properties:
+        message:
+          type: string
+          description: 錯誤訊息
+          example: 帳號或密碼錯誤。
+        type:
+          type: string
+          description: 錯誤種類
+          example: Washop\Admin\Common\Exceptions\LoginFailError
     NotFound:
       type: object
       properties:
@@ -184,6 +195,17 @@ components:
           type: string
           description: 錯誤種類
           example: Illuminate\Database\Eloquent\ModelNotFoundException
+    OtpError:
+      type: object
+      properties:
+        message:
+          type: string
+          description: 錯誤訊息
+          example: The 2fa field is required.
+        type:
+          type: string
+          description: 錯誤種類
+          example: Washop\Admin\Common\Exceptions\OtpException
     Ok:
       type: object
       properties:
