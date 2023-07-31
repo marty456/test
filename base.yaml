@@ -169,10 +169,10 @@ components:
           properties: {}
           description: 詳細錯誤訊息
           example:
-            - email:
-                - The email field is required.
-            - password:
-                - The password field is required.
+          - email:
+            - The email field is required.
+          - password:
+            - The password field is required.
     LoginFail:
       type: object
       properties:
@@ -265,9 +265,32 @@ components:
               type: string
               description: 圖檔連結
               example: https://cdn/image/xxx.webp
+    Contact:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          description: 姓名
+          example: Marty
+        telephone:
+          type: string
+          description: 手機號碼
+          example: "0912345678"
+        postal:
+          $ref: '#/components/schemas/Postal'
+        address:
+          type: string
+          description: 收件人地址
+          example: 南港路三段 47 巷 8 號 10F
     MaskContact:
       type: object
       properties:
+        id:
+          type: integer
+          example: 1
         mask_name:
           type: string
           description: 姓名 (遮罩)
@@ -276,8 +299,8 @@ components:
           type: string
           description: 手機號碼 (遮罩)
           example: 0912***678
-        postcode:
-          $ref: '#/components/schemas/Postcode'
+        postal:
+          $ref: '#/components/schemas/Postal'
         mask_address:
           type: string
           description: 收件人地址 (遮罩)
@@ -397,7 +420,7 @@ components:
           type: integer
           description: 每頁紀錄數量
           example: 20
-    Postcode:
+    Postal:
       type: object
       properties:
         code:
