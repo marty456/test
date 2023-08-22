@@ -134,36 +134,36 @@ components:
     AuthError:
       type: object
       properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Washop\Admin\Common\Exceptions\InvalidSessionException
         message:
           type: string
           description: 錯誤訊息
           example: 身分認證無效
-        type:
-          type: string
-          description: 錯誤種類
-          example: Washop\Admin\Common\Exceptions\InvalidSessionException
     Forbidden:
       type: object
       properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Washop\Admin\Common\Exceptions\ForbiddenException
         message:
           type: string
           description: 錯誤訊息
           example: 帳號無此權限
-        type:
-          type: string
-          description: 錯誤種類
-          example: Washop\Admin\Common\Exceptions\ForbiddenException
     FormError:
       type: object
       properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Washop\Foundation\Exceptions\ValidationException
         message:
           type: string
           description: 錯誤訊息
           example: The given data was invalid.
-        type:
-          type: string
-          description: 錯誤種類
-          example: Washop\Foundation\Exceptions\ValidationException
         extra:
           type: object
           properties: {}
@@ -176,36 +176,36 @@ components:
     LoginFail:
       type: object
       properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Washop\Admin\Common\Exceptions\LoginFailError
         message:
           type: string
           description: 錯誤訊息
           example: 帳號或密碼錯誤。
-        type:
-          type: string
-          description: 錯誤種類
-          example: Washop\Admin\Common\Exceptions\LoginFailError
     NotFound:
       type: object
       properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Illuminate\Database\Eloquent\ModelNotFoundException
         message:
           type: string
           description: 錯誤訊息
           example: Invalid data.
-        type:
-          type: string
-          description: 錯誤種類
-          example: Illuminate\Database\Eloquent\ModelNotFoundException
     OtpError:
       type: object
       properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Washop\Admin\Common\Exceptions\OtpException
         message:
           type: string
           description: 錯誤訊息
           example: The 2fa field is required.
-        type:
-          type: string
-          description: 錯誤種類
-          example: Washop\Admin\Common\Exceptions\OtpException
     Ok:
       type: object
       properties:
