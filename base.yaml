@@ -265,23 +265,23 @@ components:
               type: string
               description: 圖檔連結
               example: https://cdn/image/xxx.webp
-    Contact:
+    RawContact:
       type: object
       properties:
         id:
           type: integer
           example: 1
-        name:
+        raw_name:
           type: string
           description: 姓名
           example: Marty
-        telephone:
+        raw_telephone:
           type: string
           description: 手機號碼
           example: "0912345678"
         postal:
           $ref: '#/components/schemas/Postal'
-        address:
+        raw_address:
           type: string
           description: 收件人地址
           example: 南港路三段 47 巷 8 號 10F
