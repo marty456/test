@@ -1,691 +1,291 @@
 openapi: 3.0.1
 info:
-  title: Washop/Login-Cellphone
+  title: Washop/Base
   version: 1.0.0
 servers:
-  - url: https://api.wabow.com/
+- url: https://api.wabow.com/
 paths:
-  /register/otp:
-    post:
-      tags:
-      - 驗證碼
-      summary: 發送註冊用驗證碼簡訊
-      parameters:
-      - $ref: 'base.yaml#/components/parameters/SessionId'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              allOf:
-              - $ref: '#/components/schemas/RequestCellphone'
-              - $ref: '#/components/schemas/RequestCaptcha'
-              - required:
-                - cellphone
-                - captcha
-        required: true
-      responses:
-        200:
-          description: 簡訊 otp 發送成功
-          content:
-            application/json:
-              schema:
-                $ref: 'base.yaml#/components/schemas/Ok'
-        403:
-          $ref: 'base.yaml#/components/responses/AccountAccessError'
-        422:
-          $ref: 'base.yaml#/components/responses/FormError'
-        429:
-          $ref: 'base.yaml#/components/responses/TooManyRequests'
-  /local/register:
-    post:
-      tags:
-      - 本站登入
-      summary: 本站使用者註冊
-      parameters:
-      - $ref: 'base.yaml#/components/parameters/SessionId'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              allOf:
-              - $ref: '#/components/schemas/RequestEmail'
-              - $ref: '#/components/schemas/RequestCellphone'
-              - $ref: '#/components/schemas/RequestOtp'
-              - $ref: '#/components/schemas/RequestName'
-              - $ref: '#/components/schemas/RequestPassword'
-              - $ref: '#/components/schemas/RequestCaptcha'
-              - required:
-                - email
-                - cellphone
-                - otp
-                - name
-                - password
-                - captcha
-        required: true
-      responses:
-        200:
-          description: 使用者註冊成功
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/JWT'
-        409:
-          $ref: '#/components/responses/AccountExistError'
-        422:
-          $ref: 'base.yaml#/components/responses/FormError'
-        429:
-          $ref: 'base.yaml#/components/responses/TooManyRequests'
-  /local/login:
-    post:
-      tags:
-      - 本站登入
-      summary: 本站使用者帳密登入
-      parameters:
-      - $ref: 'base.yaml#/components/parameters/SessionId'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              allOf:
-              - $ref: '#/components/schemas/RequestCellphone'
-              - $ref: '#/components/schemas/RequestPassword'
-              - $ref: '#/components/schemas/RequestCaptcha'
-              - required:
-                - cellphone
-                - password
-                - captcha
-        required: true
-      responses:
-        200:
-          description: 使用帳號密碼登入成功
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/JWT'
-        403:
-          $ref: 'base.yaml#/components/responses/AccountAccessError'
-        409:
-          description: 帳密錯誤 / 帳號不存在
-          content:
-            application/json:
-              schema:
-                $ref: 'base.yaml#/components/schemas/LoginFail'
-        422:
-          $ref: 'base.yaml#/components/responses/FormError'
-        429:
-          $ref: 'base.yaml#/components/responses/TooManyRequests'
-  /local/password/forget:
-    post:
-      tags:
-      - 本站登入
-      summary: 發送驗證碼 email
-      parameters:
-      - $ref: 'base.yaml#/components/parameters/SessionId'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              allOf:
-              - $ref: '#/components/schemas/RequestCellphone'
-              - $ref: '#/components/schemas/RequestCaptcha'
-              - required:
-                - cellphone
-                - captcha
-        required: true
-      responses:
-        200:
-          description: email 寄送成功
-          content:
-            application/json:
-              schema:
-                $ref: 'base.yaml#/components/schemas/Ok'
-        403:
-          $ref: 'base.yaml#/components/responses/AccountAccessError'
-        422:
-          $ref: 'base.yaml#/components/responses/FormError'
-        429:
-          $ref: 'base.yaml#/components/responses/TooManyRequests'
-  /local/password/reset:
+  /dummy:
     patch:
       tags:
-      - 本站登入
-      summary: 密碼重設
-      parameters:
-      - $ref: 'base.yaml#/components/parameters/SessionId'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              allOf:
-              - $ref: '#/components/schemas/RequestOtp'
-              - $ref: '#/components/schemas/RequestPassword'
-              - $ref: '#/components/schemas/RequestCaptcha'
-              - required:
-                - otp
-                - password
-                - captcha
-        required: true
+      - 假功能
+      summary: 假功能
       responses:
         200:
-          description: 密碼重設成功
-          content:
-            application/json:
-              schema:
-                $ref: 'base.yaml#/components/schemas/Ok'
-        403:
-          $ref: 'base.yaml#/components/responses/AccountAccessError'
-        422:
-          $ref: 'base.yaml#/components/responses/FormError'
-        429:
-          $ref: 'base.yaml#/components/responses/TooManyRequests'
-  /facebook/redirect:
-    get:
-      tags:
-      - Facebook 登入
-      summary: Facebook 重新導向
-      parameters:
-      - $ref: 'base.yaml#/components/parameters/SessionId'
-      - $ref: '#/components/parameters/Original'
-      responses:
-        302:
-          description: 導向至 Facebook 登入頁面
-          content: {}
-  /facebook/callback:
-    get:
-      tags:
-      - Facebook 登入
-      summary: 透過 Redirect Code 取得 Access Token (設定為 redirect_uri)
-      responses:
-        200:
-          $ref: '#/components/responses/ThirdPartyLogin'
-        201:
-          $ref: '#/components/responses/ThirdPartyRegister'
-        403:
-          $ref: 'base.yaml#/components/responses/AccountAccessError'
-        429:
-          $ref: 'base.yaml#/components/responses/TooManyRequests'
-  /facebook/register:
-    post:
-      tags:
-      - Facebook 登入
-      summary: Facebook 使用者註冊
-      parameters:
-      - $ref: 'base.yaml#/components/parameters/SessionId'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              allOf:
-              - $ref: '#/components/schemas/RequestEmail'
-              - $ref: '#/components/schemas/RequestCellphone'
-              - $ref: '#/components/schemas/RequestOtp'
-              - $ref: '#/components/schemas/RequestName'
-              - $ref: '#/components/schemas/RequestCaptcha'
-              - required:
-                - email
-                - cellphone
-                - otp
-                - name
-                - captcha
-        required: true
-      responses:
-        200:
-          $ref: '#/components/responses/ThirdPartyLogin'
-        422:
-          $ref: 'base.yaml#/components/responses/FormError'
-        429:
-          $ref: 'base.yaml#/components/responses/TooManyRequests'
-  /line/redirect:
-    get:
-      tags:
-      - LINE 登入
-      summary: LINE 重新導向 (正式實作請按照 LINE 規格修正)
-      parameters:
-      - $ref: 'base.yaml#/components/parameters/SessionId'
-      - $ref: '#/components/parameters/Original'
-      responses:
-        302:
-          description: 導向至 LINE 登入頁面
-          content: {}
-  /line/callback:
-    get:
-      tags:
-      - LINE 登入
-      summary: 透過 Redirect Code 取得 Access Token (設定為 redirect_uri)
-      responses:
-        200:
-          $ref: '#/components/responses/ThirdPartyLogin'
-        201:
-          $ref: '#/components/responses/ThirdPartyRegister'
-        403:
-          $ref: 'base.yaml#/components/responses/AccountAccessError'
-        429:
-          $ref: 'base.yaml#/components/responses/TooManyRequests'
-  /line/register:
-    post:
-      tags:
-      - LINE 登入
-      summary: LINE 使用者註冊
-      parameters:
-      - $ref: 'base.yaml#/components/parameters/SessionId'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              allOf:
-              - $ref: '#/components/schemas/RequestEmail'
-              - $ref: '#/components/schemas/RequestCellphone'
-              - $ref: '#/components/schemas/RequestOtp'
-              - $ref: '#/components/schemas/RequestName'
-              - $ref: '#/components/schemas/RequestCaptcha'
-              - required:
-                - email
-                - cellphone
-                - otp
-                - name
-                - captcha
-        required: true
-      responses:
-        200:
-          $ref: '#/components/responses/ThirdPartyLogin'
-        422:
-          $ref: 'base.yaml#/components/responses/FormError'
-        429:
-          $ref: 'base.yaml#/components/responses/TooManyRequests'
-  /google/redirect:
-    get:
-      tags:
-      - Google 登入
-      summary: Google 重新導向 (正式實作請按照 Google 規格修正)
-      parameters:
-      - $ref: 'base.yaml#/components/parameters/SessionId'
-      - $ref: '#/components/parameters/Original'
-      responses:
-        302:
-          description: 導向至 Google 登入頁面
-          content: {}
-  /google/callback:
-    get:
-      tags:
-      - Google 登入
-      summary: 透過 Redirect Code 取得 Access Token (設定為 redirect_uri)
-      responses:
-        200:
-          $ref: '#/components/responses/ThirdPartyLogin'
-        201:
-          $ref: '#/components/responses/ThirdPartyRegister'
-        403:
-          $ref: 'base.yaml#/components/responses/AccountAccessError'
-        429:
-          $ref: 'base.yaml#/components/responses/TooManyRequests'
-  /google/register:
-    post:
-      tags:
-      - Google 登入
-      summary: Google 使用者註冊
-      parameters:
-      - $ref: 'base.yaml#/components/parameters/SessionId'
-      requestBody:
-        content:
-          application/json:
-            schema:
-              allOf:
-              - $ref: '#/components/schemas/RequestEmail'
-              - $ref: '#/components/schemas/RequestCellphone'
-              - $ref: '#/components/schemas/RequestOtp'
-              - $ref: '#/components/schemas/RequestName'
-              - $ref: '#/components/schemas/RequestCaptcha'
-              - required:
-                - email
-                - cellphone
-                - otp
-                - name
-                - captcha
-        required: true
-      responses:
-        200:
-          $ref: '#/components/responses/ThirdPartyLogin'
-        422:
-          $ref: 'base.yaml#/components/responses/FormError'
-        429:
-          $ref: 'base.yaml#/components/responses/TooManyRequests'
-  /login/renew:
-    post:
-      tags:
-      - 延長時效
-      summary: 重新簽發 token
-      responses:
-        200:
-          description: 成功交換 JWT
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RefreshJWT'
+          $ref: '#/components/responses/UpdateOk'
         401:
-          $ref: 'base.yaml#/components/responses/AuthError'
+          $ref: '#/components/responses/AuthError'
         403:
-          $ref: 'base.yaml#/components/responses/AccountAccessError'
-        429:
-          $ref: 'base.yaml#/components/responses/TooManyRequests'
-      security:
-        - Bearer: []
-  /member/cellphone:
-    patch:
-      tags:
-      - 會員個資
-      summary: 變更電話
-      requestBody:
-        content:
-          application/json:
-            schema:
-              allOf:
-              - $ref: '#/components/schemas/RequestCellphone'
-              - $ref: '#/components/schemas/RequestOtp'
-              - $ref: '#/components/schemas/RequestCaptcha'
-              - required:
-                - cellphone
-                - otp
-                - captcha
-        required: true
-      responses:
-        200:
-          $ref: 'base.yaml#/components/responses/UpdateOk'
-        401:
-          $ref: 'base.yaml#/components/responses/AuthError'
-        409:
-          $ref: '#/components/responses/AccountExistError'
-        422:
-          $ref: 'base.yaml#/components/responses/FormError'
-        429:
-          $ref: 'base.yaml#/components/responses/TooManyRequests'
-      security:
-      - Bearer: []
-  /member/password:
-    patch:
-      tags:
-      - 會員個資
-      summary: 變更密碼
-      requestBody:
-        content:
-          application/json:
-            schema:
-              allOf:
-              - properties:
-                  newPassword:
-                    type: string
-                    description: 新密碼
-                    format: password
-                  oldPassword:
-                    type: string
-                    description: 原始密碼
-                    format: password
-              - $ref: '#/components/schemas/RequestCaptcha'
-              - required:
-                - newPassword
-                - oldPassword
-                - captcha
-        required: true
-      responses:
-        200:
-          $ref: 'base.yaml#/components/responses/UpdateOk'
-        401:
-          $ref: 'base.yaml#/components/responses/AuthError'
-        422:
-          $ref: 'base.yaml#/components/responses/FormError'
-        429:
-          $ref: 'base.yaml#/components/responses/TooManyRequests'
-      security:
-      - Bearer: []
-  /member/profile:
-    get:
-      tags:
-      - 會員個資
-      summary: 取得會員資料
-      responses:
-        200:
-          description: 成功取得會員資料
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Profile'
-        401:
-          $ref: 'base.yaml#/components/responses/AuthError'
-        429:
-          $ref: 'base.yaml#/components/responses/TooManyRequests'
-      security:
-      - Bearer: []
-    patch:
-      tags:
-      - 會員個資
-      summary: 更新會員資料
-      requestBody:
-        content:
-          application/json:
-            schema:
-              allOf:
-              - $ref: '#/components/schemas/RequestEmail'
-              - $ref: '#/components/schemas/RequestName'
-              - properties:
-                  gender:
-                    type: string
-                    description: 性別
-                    enum:
-                    - female
-                    - male
-                    - none
-                  birthday:
-                    type: string
-                    description: 生日
-                    format: date
-                  attrs:
-                    type: object
-                    properties:
-                      isAgreeEdm:
-                        type: boolean
-                        description: 訂閱電子報
-              - $ref: '#/components/schemas/RequestCaptcha'
-              - required:
-                - attrs
-                - captcha
-        required: true
-      responses:
-        200:
-          $ref: 'base.yaml#/components/responses/UpdateOk'
-        401:
-          $ref: 'base.yaml#/components/responses/AuthError'
-        409:
-          $ref: '#/components/responses/AccountExistError'
-        422:
-          $ref: 'base.yaml#/components/responses/FormError'
-        429:
-          $ref: 'base.yaml#/components/responses/TooManyRequests'
-      security:
-      - Bearer: []
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
 components:
   parameters:
-    Original:
-      name: original
-      in: query
-      description: 網站當前路徑 (從社交平台轉回時前往正確路徑)
+    SessionId:
+      name: Self-Generated-ID
+      in: header
+      description: 客戶端生成之隨機 Session ID
       required: true
       schema:
         type: string
+    Page:
+      name: page
+      in: path
+      required: true
+      description: 指定頁數 (預設 1)
+      schema:
+        type: integer
+    PerPage:
+      name: perPage
+      in: path
+      required: true
+      description: 每頁返回的紀錄數量 (預設 20)
+      schema:
+        type: integer
+    SortWay:
+      name: sortWay
+      in: path
+      required: true
+      description: 排序方向 (預設 asc)
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
   schemas:
-    AccountExistError:
+    AuthError:
       type: object
       properties:
         exception:
           type: string
           description: 錯誤種類
-          example: Washop\Login\Exceptions\AccountExistException
+          example: Illuminate\Auth\AuthenticationException
         message:
           type: string
-          description: 訊息
-          example: Email / Cellphone 已經註冊過
-    JWT:
-      allOf:
-      - $ref: '#/components/schemas/RefreshJWT'
-      - type: object
-        properties:
-          refreshToken:
-            type: string
-            description: JWT
-            example: eyJ0eXAiOiJ...
-    RefreshJWT:
+          description: 錯誤訊息
+          example: 身分認證無效
+    Forbidden:
       type: object
       properties:
-        payload:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Illuminate\Auth\Access\AuthorizationException
+        message:
+          type: string
+          description: 錯誤訊息
+          example: 帳號無此權限
+    FormError:
+      type: object
+      properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Illuminate\Validation\ValidationException
+        message:
+          type: string
+          description: 錯誤訊息
+          example: The given data was invalid.
+        extra:
           type: object
-          properties:
-            iat:
-              type: integer
-              description: token 發行時間
-              example: 1537346375
-            exp:
-              type: integer
-              description: token 到期時間 (24分鐘)
-              example: 1537691975
-            sub:
-              type: string
-              description: 會員 ID
-              example: 1
-            nbf:
-              type: string
-              description: 在這之前都無法適用該 JWT
-              example: 1537691975
-            iss:
-              type: string
-              description: 發行者
-              example: washop-v2
-            jti:
-              type: string
-              description: JWT ID
-              example: AAA
-          description: JWT 標準的 payload
-        accessToken:
-          type: string
-          description: JWT
-          example: eyJ0eXAiOiJ...
-    Original:
+          properties: {}
+          description: 詳細錯誤訊息
+          example:
+          - email:
+            - The email field is required.
+          - password:
+            - The password field is required.
+    LoginFail:
       type: object
       properties:
-        original:
-          description: 網站當前路徑(從社交平台轉回時前往正確路徑)
+        exception:
           type: string
-          example: default
-    Profile:
-      allOf:
-      - $ref: 'base.yaml#/components/schemas/MaskUser'
-      - type: object
-        properties:
-          levelCode:
-            type: string
-            enum:
-            - normal
-            - vip
-            example: normal
-          gender:
-            type: string
-            description: 性別
-            example: none
-            enum:
-            - female
-            - male
-            - none
-          birthday:
-            type: string
-            description: 生日
-            format: date
-          attrs:
-            type: object
-            description: 布林屬性
-            properties:
-              isAgreeEdm:
-                type: boolean
-                description: 訂閱電子報
-                example: true
-              isTesting:
-                type: boolean
-                description: 線上測試會員
-                example: true
-    RequestEmail:
+          description: 錯誤種類
+          example: Illuminate\Auth\AuthenticationException
+        message:
+          type: string
+          description: 錯誤訊息
+          example: 帳號或密碼錯誤。
+    NotFound:
       type: object
       properties:
-        email:
+        exception:
           type: string
-          description: Email
-          example: test@test.com
-    RequestCellphone:
+          description: 錯誤種類
+          example: Illuminate\Database\Eloquent\ModelNotFoundException
+        message:
+          type: string
+          description: 錯誤訊息
+          example: Invalid data.
+    Ok:
       type: object
       properties:
-        cellphone:
+        message:
           type: string
-          description: 台灣手機號碼 / 09 + 8 位數字
-          example: '0912345678'
-    RequestOtp:
+          description: 應用互動訊息
+          example: ok
+    BaseStatus:
       type: object
       properties:
-        otp:
+        code:
           type: string
-          description: 驗證碼 / 6 位數字 / 開頭可為 0
-          example: '012345'
-    RequestName:
-      type: object
-      properties:
         name:
           type: string
-          description: 規則按照 7-11 SIN 規範 / 中日韓統一表意文字 2 ~ 16 位數 / 英文 4 ~ 32位數
-          example: Marty
-    RequestPassword:
-      type: object
-      properties:
-        password:
-          type: string
-          description: 密碼 / 8 ~ 32位數 / 不得使用純數字 / 不得使用部分 email / 防止簡易密碼
-          format: password
-          example: password
-    RequestCaptcha:
-      type: object
-      properties:
-        captcha:
-          type: string
-          description: Captcha 驗證機制
-          example: captcha
-    ThirdPartyUserId:
-      type: object
-      properties:
-        thirdPartyUserId:
-          type: string
-          description: 第三方 userId / bigInt
-          example: thirdPartyUserId
-    ThirdPartyContext:
+    Payment:
+      description: 金流
       allOf:
-      - $ref: '#/components/schemas/ThirdPartyUserId'
-      - $ref: '#/components/schemas/RequestEmail'
-      - $ref: '#/components/schemas/RequestName'
+      - $ref: '#/components/schemas/BaseStatus'
+      - example:
+          code: credit-card,
+          name: 信用卡
+    Datetime:
+      type: string
+      format: datetime
+      example: "2021-01-29T03:16:42.000000Z"
+    Image:
+      type: object
+      description: 圖檔
+      properties:
+        image:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            url:
+              type: string
+              description: 圖檔連結
+              example: https://cdn/image/xxx.webp
+    MaskCellphone:
+      type: object
+      properties:
+        maskCellphone:
+          type: string
+          description: 手機號碼 (遮罩)
+          example: 0912***678
+    MaskEmail:
+      type: object
+      properties:
+        maskEmail:
+          type: string
+          description: Email (遮罩)
+          example: ma***@wabow.com
+    MaskName:
+      type: object
+      properties:
+        maskName:
+          type: string
+          description: 姓名 (遮罩)
+          example: M***y
+    MaskUser:
+      allOf:
+      - type: object
+        properties:
+          id:
+            type: integer
+            description: 會員 ID
+            example: 123
+      - $ref: '#/components/schemas/MaskName'
+      - $ref: '#/components/schemas/MaskEmail'
+    Pagination:
+      type: object
+      properties:
+        total:
+          type: integer
+          description: 紀錄總數
+          example: 1
+        perPage:
+          type: integer
+          description: 每頁紀錄數量
+          example: 20
+    Postal:
+      type: object
+      properties:
+        code:
+          type: string
+          description: 郵遞區號
+          example: 115
+        official:
+          type: string
+          description: 官方郵遞區號
+          example: 115
+        name:
+          type: string
+          description: 鄉鎮市區
+          example: 南港區
+        city:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: 台北市
+    TooManyRequests:
+      type: object
+      properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Illuminate\Http\Exceptions\ThrottleRequestsException
+        message:
+          type: string
+          description: 錯誤訊息
+          example: 請求次數超出頻率限制，稍後嘗試
   responses:
-    AccountExistError:
-      description: 帳號已存在
+    DeleteOk:
+      description: 成功刪除資料
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Ok'
+    InsertOk:
+      description: 成功新增資料
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Ok'
+    UpdateOk:
+      description: 成功更新資料
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Ok'
+    AccountAccessError:
+      description: 帳號已被停權，請與客服中心聯絡
       content:
        application/json:
          schema:
-           $ref: '#/components/schemas/AccountExistError'
-    ThirdPartyLogin:
-      description: 登入成功
+           $ref: '#/components/schemas/Forbidden'
+    AuthError:
+      description: 未認證
       content:
         application/json:
           schema:
-            allOf:
-            - $ref: '#/components/schemas/JWT'
-            - $ref: '#/components/schemas/Original'
-    ThirdPartyRegister:
-      description: 註冊會員
+            $ref: '#/components/schemas/AuthError'
+    Forbidden:
+      description: 沒有權限
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ThirdPartyContext'
-  securitySchemes:
-    Bearer:
-      type: apiKey
-      name: Authorization
-      in: header
+            $ref: '#/components/schemas/Forbidden'
+    FormError:
+      description: 表單錯誤
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FormError'
+    NotFound:
+      description: 找不到指定的資料
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotFound'
+    TooManyRequests:
+      description: 請求次數超出頻率限制
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TooManyRequests'
