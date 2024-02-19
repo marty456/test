@@ -1,0 +1,297 @@
+openapi: 3.0.1
+info:
+  title: Washop/Base
+  version: 1.0.0
+servers:
+- url: https://api.wabow.com/
+paths:
+  /dummy:
+    patch:
+      tags:
+      - 假功能
+      summary: 假功能
+      responses:
+        200:
+          $ref: '#/components/responses/UpdateOk'
+        401:
+          $ref: '#/components/responses/AuthError'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    Page:
+      name: page
+      in: path
+      required: true
+      description: 指定頁數 (預設 1)
+      schema:
+        type: integer
+    PerPage:
+      name: perPage
+      in: path
+      required: true
+      description: 每頁返回的紀錄數量 (預設 20)
+      schema:
+        type: integer
+    SortWay:
+      name: sortWay
+      in: path
+      required: true
+      description: 排序方向 (預設 asc)
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+  schemas:
+    AuthError:
+      type: object
+      properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Illuminate\Auth\AuthenticationException
+        message:
+          type: string
+          description: 錯誤訊息
+          example: 身分認證無效
+    Forbidden:
+      type: object
+      properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Illuminate\Auth\Access\AuthorizationException
+        message:
+          type: string
+          description: 錯誤訊息
+          example: 帳號無此權限
+    FormError:
+      type: object
+      properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Illuminate\Validation\ValidationException
+        message:
+          type: string
+          description: 錯誤訊息
+          example: The given data was invalid.
+        extra:
+          type: object
+          properties: {}
+          description: 詳細錯誤訊息
+          example:
+          - email:
+            - The email field is required.
+          - password:
+            - The password field is required.
+    LoginFail:
+      type: object
+      properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Illuminate\Auth\AuthenticationException
+        message:
+          type: string
+          description: 錯誤訊息
+          example: 帳號或密碼錯誤。
+    NotFound:
+      type: object
+      properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Illuminate\Database\Eloquent\ModelNotFoundException
+        message:
+          type: string
+          description: 錯誤訊息
+          example: Invalid data.
+    Ok:
+      type: object
+      properties:
+        message:
+          type: string
+          description: 應用互動訊息
+          example: ok
+    BaseStatus:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+    Payment:
+      description: 金流
+      allOf:
+      - $ref: '#/components/schemas/BaseStatus'
+      - example:
+          code: credit-card,
+          name: 信用卡
+    Datetime:
+      type: string
+      format: datetime
+      example: "2021-01-29T03:16:42.000000Z"
+    Image:
+      type: object
+      description: 圖檔
+      properties:
+        image:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            url:
+              type: string
+              description: 圖檔連結
+              example: https://cdn/image/xxx.webp
+    MaskContact:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        maskName:
+          type: string
+          description: 姓名 (遮罩)
+          example: M***y
+        birthday:
+          type: string
+          format: date
+          description: 生日
+          example: 1911-01-01
+        kinship:
+          type: string
+          description: 與學員關係
+          example: 父子
+        maskIdentification:
+          type: string
+          description: 身分證 (遮罩)
+          example: A123***789
+        postal:
+          $ref: '#/components/schemas/Postal'
+        maskAddress:
+          type: string
+          description: 收件人地址 (遮罩)
+          example: '***** 47 巷 8 號 10F'
+    MaskUser:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: 會員 ID
+          example: 123
+        maskEmail:
+          type: string
+          description: Email (遮罩)
+          example: ma***@wabow.com
+        maskName:
+          type: string
+          description: 姓名 (遮罩)
+          example: 邵*中
+    Pagination:
+      type: object
+      properties:
+        total:
+          type: integer
+          description: 紀錄總數
+          example: 1
+        perPage:
+          type: integer
+          description: 每頁紀錄數量
+          example: 20
+    Postal:
+      type: object
+      properties:
+        code:
+          type: string
+          description: 郵遞區號
+          example: 115
+        official:
+          type: string
+          description: 官方郵遞區號
+          example: 115
+        name:
+          type: string
+          description: 鄉鎮市區
+          example: 南港區
+        city:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            name:
+              type: string
+              example: 台北市
+    TooManyRequests:
+      type: object
+      properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Illuminate\Http\Exceptions\ThrottleRequestsException
+        message:
+          type: string
+          description: 錯誤訊息
+          example: 請求次數超出頻率限制，稍後嘗試
+  responses:
+    DeleteOk:
+      description: 成功刪除資料
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Ok'
+    InsertOk:
+      description: 成功新增資料
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Ok'
+    UpdateOk:
+      description: 成功更新資料
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Ok'
+    AccountAccessError:
+      description: 帳號已被停權，請與客服中心聯絡
+      content:
+       application/json:
+         schema:
+           $ref: '#/components/schemas/Forbidden'
+    AuthError:
+      description: 未認證
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthError'
+    Forbidden:
+      description: 沒有權限
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Forbidden'
+    FormError:
+      description: 表單錯誤
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FormError'
+    NotFound:
+      description: 找不到指定的資料
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotFound'
+    TooManyRequests:
+      description: 請求次數超出頻率限制
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TooManyRequests'
