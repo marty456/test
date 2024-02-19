@@ -132,6 +132,13 @@ components:
           type: string
         name:
           type: string
+    Education:
+      description: 教育程度 & 年級
+      allOf:
+      - $ref: '#/components/schemas/BaseStatus'
+      - example:
+          code: high-school-1
+          name: 高中一年級
     Payment:
       description: 金流
       allOf:
@@ -139,6 +146,13 @@ components:
       - example:
           code: credit-card,
           name: 信用卡
+    School:
+      description: 校區
+      allOf:
+      - $ref: '#/components/schemas/BaseStatus'
+      - example:
+          code: guting
+          name: 古亭
     Datetime:
       type: string
       format: datetime
@@ -157,50 +171,71 @@ components:
               type: string
               description: 圖檔連結
               example: https://cdn/image/xxx.webp
-    MaskContact:
+    MaskName:
       type: object
       properties:
-        id:
-          type: integer
-          example: 1
         maskName:
           type: string
           description: 姓名 (遮罩)
           example: M***y
-        birthday:
-          type: string
-          format: date
-          description: 生日
-          example: 1911-01-01
-        kinship:
-          type: string
-          description: 與學員關係
-          example: 父子
-        maskIdentification:
-          type: string
-          description: 身分證 (遮罩)
-          example: A123***789
-        postal:
-          $ref: '#/components/schemas/Postal'
-        maskAddress:
-          type: string
-          description: 收件人地址 (遮罩)
-          example: '***** 47 巷 8 號 10F'
-    MaskUser:
+    MaskCellphone:
       type: object
       properties:
-        id:
-          type: integer
-          description: 會員 ID
-          example: 123
-        maskEmail:
+        maskCellphone:
           type: string
-          description: Email (遮罩)
-          example: ma***@wabow.com
-        maskName:
-          type: string
-          description: 姓名 (遮罩)
-          example: 邵*中
+          description: 手機號碼 (遮罩)
+          example: 0912***678
+    MaskContact:
+      allOf:
+      - type: object
+        properties:
+          id:
+            type: integer
+            example: 1
+          kinship:
+            type: string
+            description: 與學員關係
+            example: 父子
+      - $ref: '#/components/schemas/MaskName'
+      - $ref: '#/components/schemas/MaskCellphone'
+    MaskStudent:
+      allOf:
+      - type: object
+        properties:
+          id:
+            type: integer
+            example: 1
+          birthday:
+            type: string
+            format: date
+            description: 生日
+            example: 1911-01-01
+          education:
+            $ref: '#/components/schemas/Education'
+          schools:
+            description: 校區
+            type: array
+            items:
+              $ref: '#/components/schemas/School'
+          maskIdentification:
+            type: string
+            description: 身分證 (遮罩)
+            example: A123***789
+      - $ref: '#/components/schemas/MaskName'
+    MaskUser:
+      allOf:
+      - type: object
+        properties:
+          id:
+            type: integer
+            description: 會員 ID
+            example: 123
+          maskEmail:
+            type: string
+            description: Email (遮罩)
+            example: ma***@wabow.com
+      - $ref: '#/components/schemas/MaskName'
+      - $ref: '#/components/schemas/MaskCellphone'
     Pagination:
       type: object
       properties:
