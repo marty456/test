@@ -132,13 +132,6 @@ components:
           type: string
         name:
           type: string
-    Education:
-      description: 教育程度 & 年級
-      allOf:
-      - $ref: '#/components/schemas/BaseStatus'
-      - example:
-          code: high-school-1
-          name: 高中一年級
     Payment:
       description: 金流
       allOf:
@@ -146,13 +139,6 @@ components:
       - example:
           code: credit-card,
           name: 信用卡
-    School:
-      description: 校區
-      allOf:
-      - $ref: '#/components/schemas/BaseStatus'
-      - example:
-          code: guting
-          name: 古亭
     Datetime:
       type: string
       format: datetime
@@ -185,45 +171,6 @@ components:
           type: string
           description: 手機號碼 (遮罩)
           example: 0912***678
-    MaskInsurance:
-      allOf:
-      - type: object
-        properties:
-          id:
-            type: integer
-            example: 1
-          birthday:
-            type: string
-            format: date
-            description: 學員生日
-            example: 1911-01-01
-          maskIdentification:
-            type: string
-            description: 學員身分證 (遮罩)
-            example: A123***789
-          kinship:
-            type: string
-            description: 與學員關係
-            example: 父子
-      - $ref: '#/components/schemas/MaskName'
-      - $ref: '#/components/schemas/MaskCellphone'
-    MaskStudent:
-      allOf:
-      - type: object
-        properties:
-          id:
-            type: integer
-            example: 1
-          education:
-            $ref: '#/components/schemas/Education'
-          schools:
-            description: 校區
-            type: array
-            items:
-              $ref: '#/components/schemas/School'
-          maskInsurance:
-            $ref: '#/components/schemas/MaskInsurance'
-      - $ref: '#/components/schemas/MaskName'
     MaskUser:
       allOf:
       - type: object
