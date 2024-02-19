@@ -185,13 +185,22 @@ components:
           type: string
           description: 手機號碼 (遮罩)
           example: 0912***678
-    MaskContact:
+    MaskInsurance:
       allOf:
       - type: object
         properties:
           id:
             type: integer
             example: 1
+          birthday:
+            type: string
+            format: date
+            description: 學員生日
+            example: 1911-01-01
+          maskIdentification:
+            type: string
+            description: 學員身分證 (遮罩)
+            example: A123***789
           kinship:
             type: string
             description: 與學員關係
@@ -205,11 +214,6 @@ components:
           id:
             type: integer
             example: 1
-          birthday:
-            type: string
-            format: date
-            description: 生日
-            example: 1911-01-01
           education:
             $ref: '#/components/schemas/Education'
           schools:
@@ -217,10 +221,8 @@ components:
             type: array
             items:
               $ref: '#/components/schemas/School'
-          maskIdentification:
-            type: string
-            description: 身分證 (遮罩)
-            example: A123***789
+          maskInsurance:
+            $ref: '#/components/schemas/MaskInsurance'
       - $ref: '#/components/schemas/MaskName'
     MaskUser:
       allOf:
