@@ -21,6 +21,13 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   parameters:
+    SessionId:
+      name: Self-Generated-ID
+      in: header
+      description: 客戶端生成之隨機 Session ID
+      required: true
+      schema:
+        type: string
     Page:
       name: page
       in: path
