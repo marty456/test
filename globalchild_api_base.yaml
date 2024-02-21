@@ -132,6 +132,13 @@ components:
           type: string
         name:
           type: string
+    Education:
+      description: 教育程度 & 年級
+      allOf:
+      - $ref: '#/components/schemas/BaseStatus'
+      - example:
+          code: high-school-1
+          name: 高中一年級
     Payment:
       description: 金流
       allOf:
@@ -139,6 +146,13 @@ components:
       - example:
           code: credit-card,
           name: 信用卡
+    School:
+      description: 校區
+      allOf:
+      - $ref: '#/components/schemas/BaseStatus'
+      - example:
+          code: guting
+          name: 古亭
     Datetime:
       type: string
       format: datetime
