@@ -223,6 +223,36 @@ components:
             name:
               type: string
               example: 台北市
+    SimpleGroup:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: 活動 1
+        schools:
+          type: array
+          items:
+            type: string
+            example: 古亭
+        maxPrice:
+          type: integer
+          description: 最高售價
+          example: 1500
+        minPrice:
+          type: integer
+          description: 最低售價
+          example: 1000
+        path:
+          type: string
+          description: 自訂路徑
+          example: abcdef
+        thumbnail:
+          type: string
+          description: 縮圖圖檔
+          example: https://dummyimage.com/215x305/000/fff
     TooManyRequests:
       type: object
       properties:
