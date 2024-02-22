@@ -237,6 +237,48 @@ components:
             name:
               type: string
               example: 台北市
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 87441
+        name:
+          type: string
+          description: 名稱
+          example: 場次一
+        education:
+          $ref: '#/components/schemas/Education'
+        school:
+          $ref: '#/components/schemas/School'
+        location:
+          type: string
+          description: 地點
+          example: 古亭國小正門口
+        allowQuantity:
+          type: integer
+          description: 可報名額
+          example: 100
+        markedPrice:
+          type: integer
+          description: 建議售價
+          example: 1500
+        price:
+          type: integer
+          description: 實際售價
+          example: 1000
+        attrs:
+          type: object
+          description: 布林屬性
+          properties:
+            isOverSold:
+              type: boolean
+              description: 可超賣 / 零庫存禁止銷售
+              example: true
+        quantity:
+          type: integer
+          description: 可銷售數量 / 帶同學來 / min(quantity, allow_quantity)
+          example: 10
     SimpleGroup:
       type: object
       properties:
