@@ -556,3 +556,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/NotFound'
+    OtpError:
+      description: 2fa 錯誤
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/OtpError'
