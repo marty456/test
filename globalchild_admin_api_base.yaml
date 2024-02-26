@@ -1,0 +1,558 @@
+openapi: 3.0.1
+info:
+  title: Washop/Admin/Base
+  version: 1.1.0
+servers:
+- url: https://api.admin.wabow.com/
+paths:
+  /dummy:
+    patch:
+      tags:
+      - 假功能
+      summary: 假功能
+      responses:
+        200:
+          $ref: '#/components/responses/UpdateOk'
+        401:
+          $ref: '#/components/responses/AuthError'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        404:
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    Page:
+      name: page
+      in: query
+      description: 指定頁數 (預設 1)
+      schema:
+        type: integer
+    PerPage:
+      name: per_page
+      in: query
+      description: 每頁返回的紀錄數量 (預設 20)
+      schema:
+        type: integer
+    SortWay:
+      name: sort_way
+      in: query
+      description: 排序方向
+      schema:
+        type: string
+        enum:
+        - asc
+        - desc
+        default: asc
+    Otp:
+      name: otp
+      in: query
+      description: 二次驗證碼 (6 碼數字，可能 0 開頭)
+      required: true
+      schema:
+        $ref: '#/components/schemas/Otp'
+    StartDate:
+      name: start_date
+      in: query
+      description: 開始日期
+      schema:
+        type: string
+        format: date
+    EndDate:
+      name: end_date
+      in: query
+      description: 結束日期
+      schema:
+        type: string
+        format: date
+    Tags:
+      name: tags
+      in: query
+      description: 搜尋 標籤名稱 陣列
+      style: form
+      explode: false
+      schema:
+        $ref: '#/components/schemas/Tags'
+    TagWay:
+      name: tag_way
+      in: query
+      description: 標籤搜尋方式
+      schema:
+        type: string
+        enum:
+        - all
+        - any
+        default: any
+    Email:
+      name: email
+      in: query
+      description: 搜尋 Email
+      schema:
+        type: string
+    Name:
+      name: name
+      in: query
+      description: 搜尋 名稱 (姓名)
+      schema:
+        type: string
+    PaymentCode:
+      name: payment_code
+      in: query
+      description: 搜尋 金流
+      schema:
+        type: string
+  schemas:
+    AuthError:
+      type: object
+      properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Illuminate\Auth\AuthenticationException
+        message:
+          type: string
+          description: 錯誤訊息
+          example: 身分認證無效
+    Forbidden:
+      type: object
+      properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Illuminate\Auth\Access\AuthorizationException
+        message:
+          type: string
+          description: 錯誤訊息
+          example: 帳號無此權限
+    FormError:
+      type: object
+      properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Illuminate\Validation\ValidationException
+        message:
+          type: string
+          description: 錯誤訊息
+          example: The given data was invalid.
+        extra:
+          type: object
+          properties: {}
+          description: 詳細錯誤訊息
+          example:
+          - email:
+            - The email field is required.
+          - password:
+            - The password field is required.
+    LoginFail:
+      type: object
+      properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Illuminate\Auth\AuthenticationException
+        message:
+          type: string
+          description: 錯誤訊息
+          example: 帳號或密碼錯誤。
+    NotFound:
+      type: object
+      properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Illuminate\Database\Eloquent\ModelNotFoundException
+        message:
+          type: string
+          description: 錯誤訊息
+          example: Invalid data.
+    OtpError:
+      type: object
+      properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Washop\Admin\Common\Exceptions\OtpException
+        message:
+          type: string
+          description: 錯誤訊息
+          example: The 2fa field is required.
+    Ok:
+      type: object
+      properties:
+        message:
+          type: string
+          description: 應用互動訊息
+          example: ok
+    Attrs:
+      type: object
+      properties:
+        enable:
+          type: boolean
+          description: 上架 / 下架
+          example: true
+    BaseStatus:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+    Department:
+      description: 部門
+      allOf:
+      - $ref: '#/components/schemas/BaseStatus'
+      - example:
+          code: guting-primary-school
+          name: 古亭國小
+    Education:
+      description: 教育程度 & 年級
+      allOf:
+      - $ref: '#/components/schemas/BaseStatus'
+      - example:
+          code: high-school-1
+          name: 高中一年級
+    Payment:
+      description: 金流
+      allOf:
+      - $ref: '#/components/schemas/BaseStatus'
+      - example:
+          code: credit-card,
+          name: 信用卡
+    School:
+      description: 校區
+      allOf:
+      - $ref: '#/components/schemas/BaseStatus'
+      - example:
+          code: guting
+          name: 古亭
+    Otp:
+      type: string
+      description: 二次驗證碼 (6 碼數字，可能 0 開頭)
+      example: "085449"
+    Datetime:
+      type: string
+      format: datetime
+      example: "2021-01-29T03:16:42.000000Z"
+    Image:
+      type: object
+      description: 圖檔
+      properties:
+        image:
+          type: object
+          properties:
+            id:
+              type: integer
+              example: 1
+            url:
+              type: string
+              description: 圖檔連結
+              example: https://cdn/image/xxx.webp
+    Birthday:
+      type: object
+      properties:
+        birthday:
+          type: string
+          format: date
+          description: 學員生日
+          example: 1911-01-01
+    Kinship:
+      type: object
+      properties:
+        kinship:
+          type: string
+          description: 與學員關係
+          example: 父子
+    MaskContact:
+      allOf:
+      - $ref: '#/components/schemas/Prefix'
+      - $ref: '#/components/schemas/Birthday'
+      - $ref: '#/components/schemas/Kinship'
+      - type: object
+        properties:
+          mask_identification:
+            type: string
+            description: 學員身分證
+            example: A123***789
+          mask_name:
+            type: string
+            description: 姓名 (遮罩)
+            example: M***y
+          mask_cellphone:
+            type: string
+            description: 手機號碼 (遮罩)
+            example: 0912***678
+      - $ref: '#/components/schemas/Suffix'
+    RawContact:
+      allOf:
+      - $ref: '#/components/schemas/Prefix'
+      - $ref: '#/components/schemas/Birthday'
+      - $ref: '#/components/schemas/Kinship'
+      - type: object
+        properties:
+          raw_identification:
+            type: string
+            description: 學員身分證
+            example: A123456789
+          raw_name:
+            type: string
+            description: 緊急聯絡人姓名
+            example: Marty2
+          raw_cellphone:
+            type: string
+            description: 手機號碼
+            example: "0912345678"
+      - $ref: '#/components/schemas/Suffix'
+    MaskStudent:
+      allOf:
+      - $ref: '#/components/schemas/Prefix'
+      - type: object
+        properties:
+          mask_user:
+            $ref: '#/components/schemas/MaskUser'
+          mask_name:
+            type: string
+            description: 學員姓名
+            example: M***y
+          education_code:
+            type: string
+            description: 教育程度 & 年級
+            example: high-school-1
+          comment:
+            type: string
+            description: 備註
+            example: 備註...
+          student_schools:
+            type: array
+            description: 【外生】此欄位無 或 空陣列
+            items:
+              $ref: '#/components/schemas/School'
+          mask_contact:
+            $ref: '#/components/schemas/MaskContact'
+      - $ref: '#/components/schemas/Suffix'
+    RawStudent:
+      allOf:
+      - $ref: '#/components/schemas/Prefix'
+      - type: object
+        properties:
+          raw_user:
+            $ref: '#/components/schemas/RawUser'
+          raw_name:
+            type: string
+            description: 學員姓名
+            example: Marty
+          education_code:
+            type: string
+            description: 教育程度 & 年級
+            example: high-school-1
+          comment:
+            type: string
+            description: 備註
+            example: 備註...
+          student_schools:
+            type: array
+            description: 【外生】此欄位無 或 空陣列
+            items:
+              $ref: '#/components/schemas/School'
+          raw_contact:
+            $ref: '#/components/schemas/RawContact'
+      - $ref: '#/components/schemas/Suffix'
+    MaskUser:
+      allOf:
+      - $ref: '#/components/schemas/Prefix'
+      - type: object
+        properties:
+          mask_email:
+            type: string
+            description: Email (遮罩)
+            example: ma***@wabow.com
+          mask_name:
+            type: string
+            description: 會員姓名 (遮罩)
+            example: 曹*
+    RawUser:
+      allOf:
+      - $ref: '#/components/schemas/Prefix'
+      - type: object
+        properties:
+          raw_email:
+            type: string
+            description: Email
+            example: marty@wabow.com
+          raw_name:
+            type: string
+            description: 會員姓名
+            example: 曹雨
+    MiniGroup:
+      allOf:
+      - $ref: '#/components/schemas/Prefix'
+      - type: object
+        properties:
+          name:
+            type: string
+            description: 群組商品 (活動) 名稱
+            example: 國醫生誤先修班
+          attrs:
+            description: 布林屬性
+            allOf:
+            - $ref: '#/components/schemas/Attrs'
+            - type: object
+              properties:
+                visible:
+                  type: boolean
+                  description: 前台顯示 / 隱形商品
+                  example: true
+                multi:
+                  type: boolean
+                  description: 可選多場次
+                  example: true
+                notify:
+                  type: boolean
+                  description: 活動通知
+                  example: true
+                showSerialNumber:
+                  type: boolean
+                  description: 顯示報名序號
+                  example: true
+                insurance:
+                  type: boolean
+                  description: 收集保險資料
+                  example: true
+    MiniProduct:
+      allOf:
+      - $ref: '#/components/schemas/Prefix'
+      - type: object
+        description: 商品 (活動場次)
+        properties:
+          price:
+            type: integer
+            description: 實際售價
+            example: 999
+          attrs:
+            description: 布林屬性
+            allOf:
+            - $ref: '#/components/schemas/Attrs'
+            - type: object
+              properties:
+                isSale:
+                  type: boolean
+                  description: 可加入購物車
+                  example: true
+                isOverSold:
+                  type: boolean
+                  description: 可超賣
+                  example: false
+          group:
+            $ref: '#/components/schemas/MiniGroup'
+    Link:
+      type: object
+      description: 連結設定
+      properties:
+        path:
+          type: string
+          description: 站內路徑 (path / url 二選一)
+          example: ""
+        url:
+          type: string
+          description: 外站連結 (path / url 二選一)
+          example: https://other.web.url
+        attrs:
+          type: object
+          properties:
+            isBlank:
+              type: boolean
+              description: 是否開新頁
+              example: true
+    Pagination:
+      type: object
+      properties:
+        total:
+          type: integer
+          description: 紀錄總數
+          example: 1
+        per_page:
+          type: integer
+          description: 每頁紀錄數量
+          example: 20
+    Prefix:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+    Sort:
+      type: object
+      properties:
+        sort:
+          type: integer
+          description: 排序
+          example: 10000
+    Suffix:
+      type: object
+      description: model 通用結尾
+      properties:
+        created_at:
+          $ref: '#/components/schemas/Datetime'
+        updated_at:
+          $ref: '#/components/schemas/Datetime'
+    SuffixWithSort:
+      description: model 含排序通用結尾
+      allOf:
+      - $ref: '#/components/schemas/Sort'
+      - $ref: '#/components/schemas/Suffix'
+    Tags:
+      description: 標籤陣列
+      type: array
+      items:
+        type: string
+      example:
+      - 標籤 A
+      - 標籤 B
+  responses:
+    DeleteOk:
+      description: 成功刪除資料
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Ok'
+    UpdateOk:
+      description: 成功更新資料
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Ok'
+    ExportOk:
+      description: 匯出 CSV 檔案至下載中心 (欄位同列表)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Ok'
+    ImportOk:
+      description: 匯入成功
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Ok'
+    AuthError:
+      description: 未認證
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AuthError'
+    Forbidden:
+      description: 沒有權限
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Forbidden'
+    FormError:
+      description: 表單錯誤
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/FormError'
+    NotFound:
+      description: 找不到指定的資料
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/NotFound'
