@@ -265,14 +265,9 @@ components:
     MaskContact:
       allOf:
       - $ref: '#/components/schemas/Prefix'
-      - $ref: '#/components/schemas/Birthday'
       - $ref: '#/components/schemas/Kinship'
       - type: object
         properties:
-          mask_identification:
-            type: string
-            description: 學員身分證
-            example: A123***789
           mask_name:
             type: string
             description: 姓名 (遮罩)
@@ -285,14 +280,9 @@ components:
     RawContact:
       allOf:
       - $ref: '#/components/schemas/Prefix'
-      - $ref: '#/components/schemas/Birthday'
       - $ref: '#/components/schemas/Kinship'
       - type: object
         properties:
-          raw_identification:
-            type: string
-            description: 學員身分證
-            example: A123456789
           raw_name:
             type: string
             description: 緊急聯絡人姓名
@@ -305,6 +295,7 @@ components:
     MaskStudent:
       allOf:
       - $ref: '#/components/schemas/Prefix'
+      - $ref: '#/components/schemas/Birthday'
       - type: object
         properties:
           mask_user:
@@ -313,6 +304,10 @@ components:
             type: string
             description: 學員姓名
             example: M***y
+          mask_identification:
+            type: string
+            description: 學員身分證
+            example: A123***789
           education_code:
             type: string
             description: 教育程度 & 年級
@@ -332,6 +327,7 @@ components:
     RawStudent:
       allOf:
       - $ref: '#/components/schemas/Prefix'
+      - $ref: '#/components/schemas/Birthday'
       - type: object
         properties:
           raw_user:
@@ -340,6 +336,10 @@ components:
             type: string
             description: 學員姓名
             example: Marty
+          raw_identification:
+            type: string
+            description: 學員身分證
+            example: A123456789
           education_code:
             type: string
             description: 教育程度 & 年級
@@ -390,7 +390,7 @@ components:
           name:
             type: string
             description: 群組商品 (活動) 名稱
-            example: 國醫生誤先修班
+            example: 國一生物先修班
           attrs:
             description: 布林屬性
             allOf:
