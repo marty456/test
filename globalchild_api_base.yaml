@@ -213,30 +213,6 @@ components:
           type: integer
           description: 每頁紀錄數量
           example: 20
-    Postal:
-      type: object
-      properties:
-        code:
-          type: string
-          description: 郵遞區號
-          example: 115
-        official:
-          type: string
-          description: 官方郵遞區號
-          example: 115
-        name:
-          type: string
-          description: 鄉鎮市區
-          example: 南港區
-        city:
-          type: object
-          properties:
-            id:
-              type: integer
-              example: 1
-            name:
-              type: string
-              example: 台北市
     Product:
       type: object
       properties:
@@ -309,6 +285,40 @@ components:
           type: string
           description: 縮圖圖檔
           example: https://dummyimage.com/215x305/000/fff
+    GroupCustom:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 12
+        name:
+          type: string
+          description: 名稱
+          example: 性別
+        type:
+          type: string
+          description: 元件類型
+          enum:
+          - text
+          - radio
+          - select
+          - checkbox
+          - textarea
+          example: radio
+        groupCustomOptions:
+          type: array
+          items:
+            $ref: '#/components/schemas/GroupCustomOption'
+    GroupCustomOption:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 123
+        value:
+          type: string
+          description: 屬性值
+          example: 男
     TooManyRequests:
       type: object
       properties:
