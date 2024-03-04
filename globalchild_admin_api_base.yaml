@@ -280,48 +280,57 @@ components:
           type: string
           description: 與學員關係
           example: 父子
+    MaskName:
+      type: object
+      properties:
+        mask_name:
+          type: string
+          description: 姓名 (遮罩)
+          example: M***y
+    MaskCellphone:
+      type: object
+      properties:
+        mask_cellphone:
+          type: string
+          description: 手機號碼 (遮罩)
+          example: 0912***678
+    RawName:
+      type: object
+      properties:
+        raw_name:
+          type: string
+          description: 姓名 (明碼)
+          example: Marty
+    RawCellphone:
+      type: object
+      properties:
+        raw_cellphone:
+          type: string
+          description: 手機號碼 (明碼)
+          example: 0912345678
     MaskContact:
       allOf:
       - $ref: '#/components/schemas/Prefix'
       - $ref: '#/components/schemas/Kinship'
-      - type: object
-        properties:
-          mask_name:
-            type: string
-            description: 姓名 (遮罩)
-            example: M***y
-          mask_cellphone:
-            type: string
-            description: 手機號碼 (遮罩)
-            example: 0912***678
+      - $ref: '#/components/schemas/MaskName'
+      - $ref: '#/components/schemas/MaskCellphone'
       - $ref: '#/components/schemas/Suffix'
     RawContact:
       allOf:
       - $ref: '#/components/schemas/Prefix'
       - $ref: '#/components/schemas/Kinship'
-      - type: object
-        properties:
-          raw_name:
-            type: string
-            description: 緊急聯絡人姓名
-            example: Marty2
-          raw_cellphone:
-            type: string
-            description: 手機號碼
-            example: "0912345678"
+      - $ref: '#/components/schemas/RawName'
+      - $ref: '#/components/schemas/RawCellphone'
       - $ref: '#/components/schemas/Suffix'
     MaskStudent:
       allOf:
       - $ref: '#/components/schemas/Prefix'
       - $ref: '#/components/schemas/Birthday'
+      - $ref: '#/components/schemas/MaskName'
       - type: object
         properties:
           mask_user:
             $ref: '#/components/schemas/MaskUser'
-          mask_name:
-            type: string
-            description: 學員姓名
-            example: M***y
           mask_identification:
             type: string
             description: 學員身分證
@@ -383,10 +392,8 @@ components:
             type: string
             description: Email (遮罩)
             example: ma***@wabow.com
-          mask_name:
-            type: string
-            description: 會員姓名 (遮罩)
-            example: 曹*
+      - $ref: '#/components/schemas/MaskName'
+      - $ref: '#/components/schemas/MaskCellphone'
     RawUser:
       allOf:
       - $ref: '#/components/schemas/Prefix'
@@ -394,12 +401,10 @@ components:
         properties:
           raw_email:
             type: string
-            description: Email
+            description: Email (明碼)
             example: marty@wabow.com
-          raw_name:
-            type: string
-            description: 會員姓名
-            example: 曹雨
+      - $ref: '#/components/schemas/RawName'
+      - $ref: '#/components/schemas/RawCellphone'
     MiniGroup:
       allOf:
       - $ref: '#/components/schemas/Prefix'
