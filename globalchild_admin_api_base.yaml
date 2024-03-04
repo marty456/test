@@ -94,10 +94,28 @@ components:
       description: 搜尋 名稱 (姓名)
       schema:
         type: string
+    StudentName:
+      name: student_name
+      in: query
+      description: 搜尋 學員名稱 (姓名)
+      schema:
+        type: string
+    EducationCode:
+      name: education_code
+      in: query
+      description: 搜尋 教育年級
+      schema:
+        type: string
     PaymentCode:
       name: payment_code
       in: query
       description: 搜尋 金流
+      schema:
+        type: string
+    SchoolCode:
+      name: school_code
+      in: query
+      description: 搜尋 校區 (在班生)
       schema:
         type: string
   schemas:
