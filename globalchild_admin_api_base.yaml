@@ -82,6 +82,12 @@ components:
         - all
         - any
         default: any
+    Cellphone:
+      name: cellphone
+      in: query
+      description: 搜尋 手機號碼
+      schema:
+        type: string
     Email:
       name: email
       in: query
@@ -201,6 +207,14 @@ components:
           type: string
           description: 應用互動訊息
           example: ok
+    Admin:
+        allOf:
+        - $ref: '#/components/schemas/Prefix'
+        - type: object
+          properties:
+            name:
+              type: string
+              example: Admin
     Attrs:
       type: object
       properties:
@@ -229,6 +243,13 @@ components:
       - example:
           code: high-school-1
           name: 高中一年級
+    OrderStatus:
+      description: 訂單狀態
+      allOf:
+      - $ref: '#/components/schemas/BaseStatus'
+      - example:
+          code: new
+          name: 新名單
     Payment:
       description: 金流
       allOf:
@@ -243,6 +264,14 @@ components:
       - example:
           code: guting
           name: 古亭
+    OneThird:
+      type: string
+      enum:
+      - y
+      - n
+      - x
+      description: 三選一
+      example: y
     Otp:
       type: string
       description: 二次驗證碼 (6 碼數字，可能 0 開頭)
@@ -329,16 +358,12 @@ components:
       - $ref: '#/components/schemas/MaskName'
       - type: object
         properties:
-          mask_user:
-            $ref: '#/components/schemas/MaskUser'
           mask_identification:
             type: string
             description: 學員身分證
             example: A123***789
-          education_code:
-            type: string
-            description: 教育程度 & 年級
-            example: high-school-1
+          education:
+            $ref: '#/components/schemas/Education'
           comment:
             type: string
             description: 備註
@@ -348,8 +373,6 @@ components:
             description: 【外生】此欄位無 或 空陣列
             items:
               $ref: '#/components/schemas/School'
-          mask_contact:
-            $ref: '#/components/schemas/MaskContact'
       - $ref: '#/components/schemas/Suffix'
     RawStudent:
       allOf:
@@ -357,8 +380,6 @@ components:
       - $ref: '#/components/schemas/Birthday'
       - type: object
         properties:
-          raw_user:
-            $ref: '#/components/schemas/RawUser'
           raw_name:
             type: string
             description: 學員姓名
@@ -367,10 +388,8 @@ components:
             type: string
             description: 學員身分證
             example: A123456789
-          education_code:
-            type: string
-            description: 教育程度 & 年級
-            example: high-school-1
+          education:
+            $ref: '#/components/schemas/Education'
           comment:
             type: string
             description: 備註
@@ -380,8 +399,6 @@ components:
             description: 【外生】此欄位無 或 空陣列
             items:
               $ref: '#/components/schemas/School'
-          raw_contact:
-            $ref: '#/components/schemas/RawContact'
       - $ref: '#/components/schemas/Suffix'
     MaskUser:
       allOf:
@@ -405,67 +422,83 @@ components:
             example: marty@wabow.com
       - $ref: '#/components/schemas/RawName'
       - $ref: '#/components/schemas/RawCellphone'
-    MiniGroup:
+    MiniOrder:
+      allOf:
+      - $ref: '#/components/schemas/Prefix'
+      - type: object
+        properties:
+          number:
+            type: string
+            description: 訂單編號
+            example: '0000000202'
+    ListOrder:
+      allOf:
+      - $ref: '#/components/schemas/MiniOrder'
+      - type: object
+        properties:
+          group_id:
+            type: integer
+            description: 活動 ID
+            example: 1
+          group_name:
+            type: string
+            description: 活動名稱
+            example: 升高中活動講座
+          total:
+            type: integer
+            description: 含運總額
+            example: 450
+          admin_comment:
+            type: string
+            description: 客服備註
+            example: ""
+          admin:
+            $ref: '#/components/schemas/Admin'
+          department:
+            $ref: '#/components/schemas/Department'
+          status:
+            $ref: '#/components/schemas/OrderStatus'
+          student_education:
+            $ref: '#/components/schemas/Education'
+          mask_user:
+            $ref: '#/components/schemas/MaskUser'
+          mask_student:
+            $ref: '#/components/schemas/MaskStudent'
+      - $ref: '#/components/schemas/Suffix'
+    OrderItem:
+      allOf:
+      - $ref: '#/components/schemas/Prefix'
+      - type: object
+        properties:
+          product:
+            $ref: '#/components/schemas/MiniProduct'
+          final_price:
+            type: integer
+            description: 成交價
+            example: 450
+          quantity:
+            type: integer
+            description: 成交數量
+            example: 1
+          user_answer:
+            allOf:
+            - description: 會員回覆參加意願
+            - $ref: '#/components/schemas/OneThird'
+    MiniProduct:
       allOf:
       - $ref: '#/components/schemas/Prefix'
       - type: object
         properties:
           name:
             type: string
-            description: 群組商品 (活動) 名稱
-            example: 國一生物先修班
-          attrs:
-            description: 布林屬性
-            allOf:
-            - $ref: '#/components/schemas/Attrs'
-            - type: object
-              properties:
-                visible:
-                  type: boolean
-                  description: 前台顯示 / 隱形商品
-                  example: true
-                multi:
-                  type: boolean
-                  description: 可選多場次
-                  example: true
-                notify:
-                  type: boolean
-                  description: 活動通知
-                  example: true
-                showSerialNumber:
-                  type: boolean
-                  description: 顯示報名序號
-                  example: true
-                insurance:
-                  type: boolean
-                  description: 收集保險資料
-                  example: true
-    MiniProduct:
-      allOf:
-      - $ref: '#/components/schemas/Prefix'
-      - type: object
-        description: 商品 (活動場次)
-        properties:
-          price:
-            type: integer
-            description: 實際售價
-            example: 999
-          attrs:
-            description: 布林屬性
-            allOf:
-            - $ref: '#/components/schemas/Attrs'
-            - type: object
-              properties:
-                isSale:
-                  type: boolean
-                  description: 可加入購物車
-                  example: true
-                isOverSold:
-                  type: boolean
-                  description: 可超賣
-                  example: false
-          group:
-            $ref: '#/components/schemas/MiniGroup'
+            description: 場次名稱
+            example: 場次一
+          location:
+            type: string
+            description: 地址
+            example: 古亭國小
+          start_at:
+            $ref: 'base.yaml#/components/schemas/Datetime'
     Link:
       type: object
       description: 連結設定
