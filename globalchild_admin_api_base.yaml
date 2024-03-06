@@ -272,6 +272,14 @@ components:
       - x
       description: 三選一
       example: y
+    PaymentStatus:
+      allOf:
+      - description: 付款狀態
+      - $ref: '#/components/schemas/OneThird'
+    UserAnswer:
+      allOf:
+      - description: 會員回覆參加意願
+      - $ref: '#/components/schemas/OneThird'
     Otp:
       type: string
       description: 二次驗證碼 (6 碼數字，可能 0 開頭)
@@ -480,10 +488,12 @@ components:
             type: integer
             description: 成交數量
             example: 1
+          serial:
+            type: integer
+            description: 報名序號
+            example: 1
           user_answer:
-            allOf:
-            - description: 會員回覆參加意願
-            - $ref: '#/components/schemas/OneThird'
+            $ref: '#/components/schemas/UserAnswer'
     MiniProduct:
       allOf:
       - $ref: '#/components/schemas/Prefix'
