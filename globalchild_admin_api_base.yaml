@@ -231,11 +231,14 @@ components:
           type: string
     Department:
       description: 部門
-      allOf:
-      - $ref: '#/components/schemas/BaseStatus'
-      - example:
-          code: guting-primary-school
-          name: 古亭國小
+      type: object
+      properties:
+        code:
+          type: string
+          example: guting-primary-school
+        name:
+          type: string
+          example: 古亭國小
     Education:
       description: 教育程度 & 年級
       allOf:
@@ -466,7 +469,7 @@ components:
             $ref: '#/components/schemas/Department'
           status:
             $ref: '#/components/schemas/OrderStatus'
-          student_education:
+          education:
             $ref: '#/components/schemas/Education'
           mask_user:
             $ref: '#/components/schemas/MaskUser'
