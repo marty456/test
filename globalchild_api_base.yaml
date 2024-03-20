@@ -132,7 +132,7 @@ components:
           type: string
         name:
           type: string
-    Education:
+    Grade:
       description: 教育程度 & 年級
       allOf:
       - $ref: '#/components/schemas/BaseStatus'
@@ -144,7 +144,7 @@ components:
       allOf:
       - $ref: '#/components/schemas/BaseStatus'
       - example:
-          code: credit-card,
+          code: credit-card
           name: 信用卡
     School:
       description: 校區
@@ -223,8 +223,8 @@ components:
           type: string
           description: 名稱
           example: 場次一
-        education:
-          $ref: '#/components/schemas/Education'
+        grade:
+          $ref: '#/components/schemas/Grade'
         school:
           $ref: '#/components/schemas/School'
         location:
@@ -243,6 +243,8 @@ components:
           type: integer
           description: 實際售價
           example: 1000
+        startAt:
+          $ref: 'base.yaml#/components/schemas/Datetime'
         attrs:
           type: object
           description: 布林屬性
