@@ -106,8 +106,8 @@ components:
       description: 搜尋 學員名稱 (姓名)
       schema:
         type: string
-    EducationCode:
-      name: education_code
+    Grade:
+      name: grade
       in: query
       description: 搜尋 教育年級
       schema:
@@ -118,8 +118,8 @@ components:
       description: 搜尋 金流
       schema:
         type: string
-    SchoolCode:
-      name: school_code
+    School:
+      name: school
       in: query
       description: 搜尋 校區 (在班生)
       schema:
@@ -239,7 +239,7 @@ components:
         name:
           type: string
           example: 古亭國小
-    Education:
+    Grade:
       description: 教育程度 & 年級
       allOf:
       - $ref: '#/components/schemas/BaseStatus'
@@ -373,8 +373,8 @@ components:
             type: string
             description: 學員身分證
             example: A123***789
-          education:
-            $ref: '#/components/schemas/Education'
+          grade:
+            $ref: '#/components/schemas/Grade'
           comment:
             type: string
             description: 備註
@@ -399,8 +399,8 @@ components:
             type: string
             description: 學員身分證
             example: A123456789
-          education:
-            $ref: '#/components/schemas/Education'
+          grade:
+            $ref: '#/components/schemas/Grade'
           comment:
             type: string
             description: 備註
@@ -469,8 +469,8 @@ components:
             $ref: '#/components/schemas/Department'
           status:
             $ref: '#/components/schemas/OrderStatus'
-          education:
-            $ref: '#/components/schemas/Education'
+          grade:
+            $ref: '#/components/schemas/Grade'
           mask_user:
             $ref: '#/components/schemas/MaskUser'
           mask_student:
