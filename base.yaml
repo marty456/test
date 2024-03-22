@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Washop/Admin/Base
-  version: 1.1.0
+  version: 1.2.0
 servers:
 - url: https://api.admin.wabow.com/
 paths:
@@ -21,6 +21,13 @@ paths:
           $ref: '#/components/responses/NotFound'
 components:
   parameters:
+    SessionId:
+      name: Self-Generated-ID
+      in: header
+      description: 客戶端生成之隨機 Session ID
+      required: true
+      schema:
+        type: string
     Page:
       name: page
       in: query
@@ -131,6 +138,12 @@ components:
       schema:
         type: string
   schemas:
+    AccountAccessError:
+      description: 帳號已被停權，請與客服中心聯絡
+      content:
+       application/json:
+         schema:
+           $ref: '#/components/schemas/Forbidden'
     AuthError:
       type: object
       properties:
@@ -206,6 +219,17 @@ components:
           type: string
           description: 錯誤訊息
           example: The 2fa field is required.
+    TooManyRequests:
+      type: object
+      properties:
+        exception:
+          type: string
+          description: 錯誤種類
+          example: Illuminate\Http\Exceptions\ThrottleRequestsException
+        message:
+          type: string
+          description: 錯誤訊息
+          example: 請求次數超出頻率限制，稍後嘗試
     Ok:
       type: object
       properties:
@@ -494,6 +518,12 @@ components:
       - 標籤 A
       - 標籤 B
   responses:
+    InsertOk:
+      description: 成功新增資料
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Ok'
     DeleteOk:
       description: 成功刪除資料
       content:
@@ -542,3 +572,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/NotFound'
+    TooManyRequests:
+      description: 請求次數超出頻率限制
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TooManyRequests'
